@@ -22,28 +22,38 @@ const dateColumns: NodeListOf<HTMLDivElement> = document.querySelectorAll(
   '.datepicker__column'
 );
 
-const [first, previous, current, next, last] = dateColumns[0].children;
-
 let currentDay: number = 0;
 
-function reflectState(): void {
+function reflectState(
+  element: HTMLDivElement,
+  calendarUnit: string[] | number[]
+): void {
+  const [first, previous, current, next, last] = element.children;
   first.innerHTML = `${
     currentDay === 0
-      ? days[days.length - 2]
+      ? calendarUnit[calendarUnit.length - 2]
       : currentDay === 1
-      ? days[days.length - 1]
-      : days[currentDay - 2]
+      ? calendarUnit[calendarUnit.length - 1]
+      : calendarUnit[currentDay - 2]
   }`;
   previous.innerHTML = `${
-    currentDay === 0 ? days[days.length - 1] : days[currentDay - 1]
+    currentDay === 0
+      ? calendarUnit[calendarUnit.length - 1]
+      : calendarUnit[currentDay - 1]
   }`;
 
-  current.innerHTML = `${days[currentDay]}`;
+  current.innerHTML = `${calendarUnit[currentDay]}`;
   next.innerHTML = `${
-    currentDay === days.length - 1 ? days[0] : days[currentDay + 1]
+    currentDay === calendarUnit.length - 1
+      ? calendarUnit[0]
+      : calendarUnit[currentDay + 1]
   }`;
   last.innerHTML = `${
-    currentDay === days.length - 1 ? days[1] : days[currentDay + 2]
+    currentDay === calendarUnit.length - 1
+      ? calendarUnit[1]
+      : currentDay === calendarUnit.length - 2
+      ? calendarUnit[0]
+      : calendarUnit[currentDay + 2]
   }`;
 }
 
@@ -53,15 +63,11 @@ const buttonInc = document.querySelector('.increment');
 const buttonDec = document.querySelector('.decrement');
 
 buttonInc?.addEventListener('click', (e) => {
-  currentDay = currentDay >= days.length - 1 ? 0 : currentDay + 1;
-  console.log('akak');
-  console.log(currentDay);
-  reflectState();
+  currentDay = currentDay >= years.length - 1 ? 0 : currentDay + 1;
+  reflectState(dateColumns[2], years);
 });
 
 buttonDec?.addEventListener('click', (e) => {
-  currentDay = currentDay <= 0 ? days.length - 1 : currentDay - 1;
-  console.log('akassk');
-  console.log(currentDay);
-  reflectState();
+  currentDay = currentDay <= 0 ? years.length - 1 : currentDay - 1;
+  reflectState(dateColumns[2], years);
 });
