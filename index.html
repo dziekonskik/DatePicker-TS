@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Datepicker TS</title>
+  </head>
+  <body>
+    <section class="wrapper">
+      <div class="app">
+        <h2 class="app__title">
+          Pick <span class="app__title--color">a Date</span>
+        </h2>
+        <button class="increment">Increment</button>
+        <div class="datepicker">
+          <div class="datepicker__column datepicker__column--day">
+            <span class="first">21</span>
+            <span class="previous">23</span>
+            <span class="current">24</span>
+            <span class="next">25</span>
+            <span class="last">27</span>
+          </div>
+          <div class="datepicker__column datepicker__column--month">
+            <span class="first">Mar</span>
+            <span class="previous">May</span>
+            <span class="current">Jun</span>
+            <span class="next">Jul</span>
+            <span class="last">Oct</span>
+          </div>
+          <div class="datepicker__column datepicker__column--year">
+            <span class="first">2017</span>
+            <span class="previous">2019</span>
+            <span class="current">2020</span>
+            <span class="next">2021</span>
+            <span class="last">2023</span>
+          </div>
+        </div>
+        <button class="decrement">Decrements</button>
+      </div>
+    </section>
+    <script src="app.ts"></script>
+  </body>
+</html>
