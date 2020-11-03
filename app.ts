@@ -1,7 +1,7 @@
 const days: number[] = Array.from({ length: 31 }, (item, index) => index + 1);
 const years: number[] = Array.from(
-  { length: 40 },
-  (item, index) => 2001 + index
+  { length: 41 },
+  (item, index) => 2000 + index
 );
 const months: string[] = [
   'Jan',
@@ -29,32 +29,36 @@ function reflectState(
   calendarUnit: string[] | number[]
 ): void {
   const [first, previous, current, next, last] = element.children;
-  first.innerHTML = `${
+  const ifCurrentIsBegginingIamBeforetheEndOrTwoUnitsBehindCurrent: string = `${
     currentDay === 0
       ? calendarUnit[calendarUnit.length - 2]
       : currentDay === 1
       ? calendarUnit[calendarUnit.length - 1]
       : calendarUnit[currentDay - 2]
   }`;
-  previous.innerHTML = `${
+  const ifCurrentIsFirstIamLastOrOneBehindCurrent: string = `${
     currentDay === 0
       ? calendarUnit[calendarUnit.length - 1]
       : calendarUnit[currentDay - 1]
   }`;
-
-  current.innerHTML = `${calendarUnit[currentDay]}`;
-  next.innerHTML = `${
+  const ifCurrentIsLastIAmFirstOrOneBeforeCurrent: string = `${
     currentDay === calendarUnit.length - 1
       ? calendarUnit[0]
       : calendarUnit[currentDay + 1]
   }`;
-  last.innerHTML = `${
+  const ifCurrentIsLastIamSecondOrTwoUnitsAheadOfCurrent: string = `${
     currentDay === calendarUnit.length - 1
       ? calendarUnit[1]
       : currentDay === calendarUnit.length - 2
       ? calendarUnit[0]
       : calendarUnit[currentDay + 2]
   }`;
+
+  first.innerHTML = ifCurrentIsBegginingIamBeforetheEndOrTwoUnitsBehindCurrent;
+  previous.innerHTML = ifCurrentIsFirstIamLastOrOneBehindCurrent;
+  current.innerHTML = `${calendarUnit[currentDay]}`;
+  next.innerHTML = ifCurrentIsLastIAmFirstOrOneBeforeCurrent;
+  last.innerHTML = ifCurrentIsLastIamSecondOrTwoUnitsAheadOfCurrent;
 }
 
 console.log(dateColumns);
