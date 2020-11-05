@@ -39,7 +39,7 @@ body {
 .app__title--color {
   color: #004aff;
   position: absolute;
-  bottom: -63%;
+  top: 24%;
 }
 
 .datepicker {
@@ -51,17 +51,17 @@ body {
   position: relative;
   overflow: hidden;
   transition: all 0.7s;
+  user-select: none;
 }
 
 .datepicker::before {
   content: '';
   position: absolute;
+  background-color: whitesmoke;
   bottom: 0;
-
   left: 0;
   border-top: 1px solid black;
   height: 38%;
-  background-color: whitesmoke;
   width: 100%;
   opacity: 0.9;
 }
@@ -95,7 +95,35 @@ body {
 .previous,
 .current,
 .next {
+  position: absolute;
   font-size: 40px;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scale(0.7);
   padding: 4px;
+  transition: all 0.3s;
+}
+
+.current {
+  top: 50%;
+  transform: translateY(-50%) scale(1);
+}
+
+.previous {
+  top: 27%;
+}
+
+.first {
+  top: 0;
+}
+
+.next {
+  top: 76%;
+}
+
+.last {
+  top: 100%;
+}
+
+span {
+  position: absolute;
+  transform: translateX(-400px);
 }
