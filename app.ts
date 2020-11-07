@@ -62,7 +62,7 @@ function datePickerElement(
 
   function move(direction?: string) {
     removeClasses();
-    if (direction === 'back') {
+    if (direction === 'down') {
       [first, prev, curr, next, last] = [
         first.previousElementSibling || container.lastElementChild,
         first,
@@ -90,11 +90,11 @@ function datePickerElement(
     console.log('mousedown');
 
     function handleMouseMove(event: MouseEvent) {
-      console.log(event.movementY);
       const haveMovedEnough =
         calculateDirection(startPosition, event.y) % 30 === 0;
+
       if (event.movementY > 0 && haveMovedEnough) {
-        move('back');
+        move('down');
       }
       if (event.movementY < 0 && haveMovedEnough) {
         move();
@@ -109,7 +109,9 @@ function datePickerElement(
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseup', handleMouseUp);
   }
-
+  container.addEventListener('wheel', (e: WheelEvent) => {
+    e.deltaY > 0 ? move('down') : move();
+  });
   container.addEventListener('mousedown', handleMouseDown);
 }
 
