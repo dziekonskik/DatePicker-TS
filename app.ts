@@ -32,14 +32,12 @@ function datePickerElement(
   let next: HTMLSpanElement;
   let last: HTMLSpanElement;
 
-  let actionDB: number[] = [];
-
   const classes = ['first', 'previous', 'current', 'next', 'last'];
 
   listOfDates.forEach((date: string | number) => {
     const span: HTMLSpanElement = document.createElement('span');
     container.appendChild(span);
-    span.innerHTML = date;
+    span.innerHTML = date.toString();
   });
 
   curr = container.firstElementChild;
@@ -83,26 +81,36 @@ function datePickerElement(
     }
     addClasses();
   }
-  function calculateDirection(): number {
-    return actionDB.reduce((mousedown, mouseup) => mousedown - mouseup);
+  function calculateDirection(initial: number, offset: number): number {
+    return initial - offset;
   }
 
   function handleMouseDown(event: MouseEvent): void {
-    actionDB.length = 0;
-    actionDB.unshift(event.clientY);
-  }
+    const startPosition = event.y;
+    console.log('mousedown');
 
-  function handleMouseUp(event: MouseEvent) {
-    actionDB.unshift(event.clientY);
-    if (calculateDirection() > 0) {
-      move('back');
-    } else {
-      move();
+    function handleMouseMove(event: MouseEvent) {
+      console.log(event.movementY);
+      const haveMovedEnough =
+        calculateDirection(startPosition, event.y) % 30 === 0;
+      if (event.movementY > 0 && haveMovedEnough) {
+        move('back');
+      }
+      if (event.movementY < 0 && haveMovedEnough) {
+        move();
+      }
     }
+
+    function handleMouseUp() {
+      container.removeEventListener('mousemove', handleMouseMove);
+      console.log('mousemove REmoved');
+    }
+
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseup', handleMouseUp);
   }
 
   container.addEventListener('mousedown', handleMouseDown);
-  container.addEventListener('mouseup', handleMouseUp);
 }
 
 datePickerElement(dateColumns[0], days);
