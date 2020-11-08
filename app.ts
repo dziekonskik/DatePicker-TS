@@ -32,7 +32,13 @@ function datePickerElement(
   let next: HTMLSpanElement;
   let last: HTMLSpanElement;
 
-  const classes = ['first', 'previous', 'current', 'next', 'last'];
+  const availableClasses: string[] = [
+    'first',
+    'previous',
+    'current',
+    'next',
+    'last',
+  ];
 
   listOfDates.forEach((date: string | number) => {
     const span: HTMLSpanElement = document.createElement('span');
@@ -46,7 +52,7 @@ function datePickerElement(
   next = curr.nextElementSibling || container.firstElementChild;
   last = next.nextElementSibling || container.firstElementChild;
 
-  function addClasses() {
+  function addClasses(): void {
     first.classList.add('first');
     prev.classList.add('previous');
     curr.classList.add('current');
@@ -54,15 +60,15 @@ function datePickerElement(
     last.classList.add('last');
   }
   addClasses();
-  function removeClasses() {
+  function removeClasses(): void {
     [first, prev, curr, next, last].map((item) =>
-      item.classList.remove(...classes)
+      item.classList.remove(...availableClasses)
     );
   }
 
-  function move(direction?: string) {
+  function move(direction?: string): void {
     removeClasses();
-    if (direction === 'down') {
+    if (direction === '') {
       [first, prev, curr, next, last] = [
         first.previousElementSibling || container.lastElementChild,
         first,
@@ -85,32 +91,60 @@ function datePickerElement(
     return initial - offset;
   }
 
+  const indicatorManager = (
+    positionX: number,
+    positionY: number
+  ): HTMLDivElement => {
+    const indicator = document.createElement('div');
+    indicator.className = '';
+    indicator.style.top = `${positionY - indicator.offsetHeight / 2}px`;
+    indicator.style.left = `${positionX - indicator.offsetWidth / 2}px`;
+    indicator.classList.add('indicator');
+    document.body.appendChild(indicator);
+    indicator.onmouseup = () => indicator.remove();
+    return indicator;
+  };
+
+  function moveElement(
+    element: HTMLElement,
+    positionX: number,
+    positionY: number
+  ): void {
+    element.style.top = `${positionY}px`;
+    element.style.left = `${positionX}px`;
+  }
+
   function handleMouseDown(event: MouseEvent): void {
     const startPosition = event.y;
-    console.log('mousedown');
+
+    type IndicatorMode = 'create' | 'delete';
+
+    let indicator = indicatorManager(event.clientX, event.clientY);
 
     function handleMouseMove(event: MouseEvent) {
       const haveMovedEnough =
-        calculateDirection(startPosition, event.y) % 30 === 0;
+        calculateDirection(startPosition, event.y) % 20 === 0;
 
       if (event.movementY > 0 && haveMovedEnough) {
-        move('down');
+        move('');
       }
       if (event.movementY < 0 && haveMovedEnough) {
         move();
       }
+
+      moveElement(indicator, event.clientX, event.clientY);
     }
 
     function handleMouseUp() {
       container.removeEventListener('mousemove', handleMouseMove);
-      console.log('mousemove REmoved');
+      indicator.remove();
     }
 
-    container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseup', handleMouseUp);
+    container.addEventListener('mousemove', handleMouseMove);
   }
   container.addEventListener('wheel', (e: WheelEvent) => {
-    e.deltaY > 0 ? move('down') : move();
+    e.deltaY > 0 ? move('') : move();
   });
   container.addEventListener('mousedown', handleMouseDown);
 }
