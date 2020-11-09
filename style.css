@@ -95,11 +95,15 @@ body {
   color: #004aff;
 }
 
+.pre,
+.before,
 .first,
 .last,
 .previous,
 .current,
-.next {
+.next,
+.after,
+.pra {
   position: absolute;
   font-size: 40px;
   transform: translateY(-50%) scale(0.7);
@@ -110,6 +114,14 @@ body {
 .current {
   top: 50%;
   transform: translateY(-50%) scale(1);
+}
+
+.pre {
+  top: -30%;
+}
+
+.before {
+  top: -10%;
 }
 
 .previous {
@@ -126,6 +138,14 @@ body {
 
 .last {
   top: 100%;
+}
+
+.after {
+  top: 110%;
+}
+
+.pra {
+  top: 130%;
 }
 
 span {
