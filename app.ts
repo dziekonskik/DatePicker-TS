@@ -77,7 +77,7 @@ function datePickerElement(
   }
   addClasses();
   function removeClasses(): void {
-    [before, first, prev, curr, next, last, after].map((item) =>
+    [pre, before, first, prev, curr, next, last, after, pra].map((item) =>
       item.classList.remove(...availableClasses)
     );
   }
@@ -166,7 +166,7 @@ function datePickerElement(
     container.addEventListener('mousemove', handleMouseMove);
   }
   container.addEventListener('wheel', (e: WheelEvent) => {
-    e.deltaY > 0 ? move('') : move();
+    e.deltaY > 0 ? move('down') : move();
   });
   container.addEventListener('mousedown', handleMouseDown);
 }

@@ -108,7 +108,7 @@ body {
   font-size: 40px;
   transform: translateY(-50%) scale(0.7);
   padding: 4px;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .current {
@@ -118,10 +118,12 @@ body {
 
 .pre {
   top: -30%;
+  opacity: 0;
 }
 
 .before {
   top: -10%;
+  opacity: 0;
 }
 
 .previous {
@@ -142,10 +144,12 @@ body {
 
 .after {
   top: 110%;
+  opacity: 0;
 }
 
 .pra {
   top: 130%;
+  opacity: 0;
 }
 
 span {
