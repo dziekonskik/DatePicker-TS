@@ -52,7 +52,7 @@ function datePickerElement(container, listOfDates) {
     }
     function move(direction) {
         removeClasses();
-        if (direction === '') {
+        if (direction === 'down') {
             [first, prev, curr, next, last] = [
                 first.previousElementSibling || container.lastElementChild,
                 first,
@@ -75,28 +75,36 @@ function datePickerElement(container, listOfDates) {
     function calculateDirection(initial, offset) {
         return initial - offset;
     }
+    const indicatorManager = (positionX, positionY) => {
+        const indicator = document.createElement('div');
+        indicator.className = '';
+        indicator.style.top = `${positionY - indicator.offsetHeight / 2}px`;
+        indicator.style.left = `${positionX - indicator.offsetWidth / 2}px`;
+        indicator.classList.add('indicator');
+        document.body.appendChild(indicator);
+        indicator.onmouseup = () => indicator.remove();
+        return indicator;
+    };
+    function moveElement(element, positionX, positionY) {
+        element.style.top = `${positionY}px`;
+        element.style.left = `${positionX}px`;
+    }
     function handleMouseDown(event) {
         const startPosition = event.y;
-        const indicatorManager = (mode) => {
-            const indicator = document.createElement('div');
-            indicator.className = '';
-            indicator.classList.add('indicator');
-            indicator.style.top = `${event.clientY + indicator.offsetHeight / 2}px`;
-            indicator.style.left = `${event.clientX - indicator.offsetWidth / 2}px`;
-        };
-        indicatorManager('create');
+        let indicator = indicatorManager(event.clientX, event.clientY);
         function handleMouseMove(event) {
             const haveMovedEnough = calculateDirection(startPosition, event.y) % 20 === 0;
             if (event.movementY > 0 && haveMovedEnough) {
-                move('');
+                move('down');
             }
             if (event.movementY < 0 && haveMovedEnough) {
                 move();
             }
+            moveElement(indicator, event.clientX, event.clientY);
         }
         function handleMouseUp() {
             container.removeEventListener('mousemove', handleMouseMove);
-            console.log('indicator');
+            indicator.remove();
         }
         container.addEventListener('mouseup', handleMouseUp);
         container.addEventListener('mousemove', handleMouseMove);

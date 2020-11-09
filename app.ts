@@ -68,7 +68,7 @@ function datePickerElement(
 
   function move(direction?: string): void {
     removeClasses();
-    if (direction === '') {
+    if (direction === 'down') {
       [first, prev, curr, next, last] = [
         first.previousElementSibling || container.lastElementChild,
         first,
@@ -117,8 +117,6 @@ function datePickerElement(
   function handleMouseDown(event: MouseEvent): void {
     const startPosition = event.y;
 
-    type IndicatorMode = 'create' | 'delete';
-
     let indicator = indicatorManager(event.clientX, event.clientY);
 
     function handleMouseMove(event: MouseEvent) {
@@ -126,7 +124,7 @@ function datePickerElement(
         calculateDirection(startPosition, event.y) % 20 === 0;
 
       if (event.movementY > 0 && haveMovedEnough) {
-        move('');
+        move('down');
       }
       if (event.movementY < 0 && haveMovedEnough) {
         move();
