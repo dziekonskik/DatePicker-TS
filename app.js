@@ -17,17 +17,25 @@ const months = [
 ];
 const dateColumns = document.querySelectorAll('.datepicker__column');
 function datePickerElement(container, listOfDates) {
+    let pre;
+    let before;
     let first;
     let prev;
     let curr;
     let next;
     let last;
+    let after;
+    let pra;
     const availableClasses = [
+        'pre',
+        'before',
         'first',
         'previous',
         'current',
         'next',
         'last',
+        'after',
+        'pra',
     ];
     listOfDates.forEach((date) => {
         const span = document.createElement('span');
@@ -37,37 +45,53 @@ function datePickerElement(container, listOfDates) {
     curr = container.firstElementChild;
     prev = curr.previousElementSibling || container.lastElementChild;
     first = prev.previousElementSibling || container.lastElementChild;
+    before = first.previousElementSibling || container.lastElementChild;
+    pre = before.previousElementSibling || container.lastElementChild;
     next = curr.nextElementSibling || container.firstElementChild;
     last = next.nextElementSibling || container.firstElementChild;
+    after = last.nextElementSibling || container.firstElementChild;
+    pra = after.nextElementSibling || container.firstElementChild;
     function addClasses() {
+        pre.classList.add('pre');
+        before.classList.add('before');
         first.classList.add('first');
         prev.classList.add('previous');
         curr.classList.add('current');
         next.classList.add('next');
         last.classList.add('last');
+        after.classList.add('after');
+        pra.classList.add('pra');
     }
     addClasses();
     function removeClasses() {
-        [first, prev, curr, next, last].map((item) => item.classList.remove(...availableClasses));
+        [pre, before, first, prev, curr, next, last, after, pra].map((item) => item.classList.remove(...availableClasses));
     }
     function move(direction) {
         removeClasses();
         if (direction === 'down') {
-            [first, prev, curr, next, last] = [
-                first.previousElementSibling || container.lastElementChild,
+            [pre, before, first, prev, curr, next, last, after, pra] = [
+                pre.previousElementSibling || container.lastElementChild,
+                pre,
+                before,
                 first,
                 prev,
                 curr,
                 next,
+                last,
+                after,
             ];
         }
         else {
-            [first, prev, curr, next, last] = [
+            [pre, before, first, prev, curr, next, last, after, pra] = [
+                before,
+                first,
                 prev,
                 curr,
                 next,
                 last,
-                last.nextElementSibling || container.firstElementChild,
+                after,
+                pra,
+                pra.nextElementSibling || container.firstElementChild,
             ];
         }
         addClasses();
@@ -110,7 +134,7 @@ function datePickerElement(container, listOfDates) {
         container.addEventListener('mousemove', handleMouseMove);
     }
     container.addEventListener('wheel', (e) => {
-        e.deltaY > 0 ? move('') : move();
+        e.deltaY > 0 ? move('down') : move();
     });
     container.addEventListener('mousedown', handleMouseDown);
 }
